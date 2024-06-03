@@ -1,21 +1,14 @@
 import { LocaleType } from "@univerjs/core";
-import { enUS as UniverDesignEnUS } from "@univerjs/design";
-import { enUS as UniverDocsUIEnUS } from "@univerjs/docs-ui";
-import { enUS as UniverSheetsEnUS } from "@univerjs/sheets";
-import { enUS as UniverSheetsUIEnUS } from "@univerjs/sheets-ui";
-import { enUS as UniverUiEnUS } from "@univerjs/ui";
+import { zhCN, enUS } from 'univer:locales'
 import { functionEnUS, functionZhCN } from "./custom-function";
 
 export const locales = {
   [LocaleType.EN_US]: {
-    ...UniverSheetsEnUS,
-    ...UniverDocsUIEnUS,
-    ...UniverSheetsUIEnUS,
-    ...UniverUiEnUS,
-    ...UniverDesignEnUS,
+    ...enUS,
     ...functionEnUS,
   },
   [LocaleType.ZH_CN]: {
+    ...zhCN,
     ...functionZhCN,
   },
 };
