@@ -1,4 +1,4 @@
-import { LocaleType } from "@univerjs/core";
+import { LocaleType, Tools } from "@univerjs/core";
 /**
  * 
  * The ability to import locales from virtual modules and automatically import styles is provided by Univer Plugins. For more details, please refer to: https://univer.ai/guides/sheet/advanced/univer-plugins.
@@ -9,14 +9,7 @@ import { LocaleType } from "@univerjs/core";
  */ 
 import { zhCN, enUS } from 'univer:locales'
 import { functionEnUS, functionZhCN } from "./custom-function";
-
 export const locales = {
-  [LocaleType.EN_US]: {
-    ...enUS,
-    ...functionEnUS,
-  },
-  [LocaleType.ZH_CN]: {
-    ...zhCN,
-    ...functionZhCN,
-  },
+  [LocaleType.EN_US]: Tools.deepMerge(enUS, functionEnUS),
+  [LocaleType.ZH_CN]: Tools.deepMerge(zhCN, functionZhCN),
 };
