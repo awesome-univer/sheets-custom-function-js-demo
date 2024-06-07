@@ -1,6 +1,7 @@
 import type {
   BaseValueObject,
-  IFunctionInfo } from '@univerjs/engine-formula';
+  IFunctionInfo, 
+  IFunctionNames} from '@univerjs/engine-formula';
 import {
   ArrayValueObject,
   AsyncObject,
@@ -9,6 +10,8 @@ import {
   NumberValueObject,
   StringValueObject,
 } from '@univerjs/engine-formula';
+
+import { type Ctor } from '@wendellhu/redi';
 
 /**
  * function name
@@ -237,6 +240,9 @@ export class Customsum extends BaseFunction {
   }
 }
 
+/**
+ * Get data asynchronously and assign it to array formula
+ */
 export class CustomAsyncArray extends BaseFunction {
   override calculate(value: BaseValueObject) {
       return new AsyncObject(asyncArrayFunction(value));
@@ -255,6 +261,9 @@ async function asyncArrayFunction(value: BaseValueObject) {
   });
 }
 
+/**
+ * Get data asynchronously and assign it to a single formula value
+ */
 export class CustomAsyncObject extends BaseFunction {
   override calculate(value: BaseValueObject) {
       return new AsyncObject(asyncObjectFunction(value));
@@ -273,7 +282,7 @@ async function asyncObjectFunction(value: BaseValueObject) {
   });
 }
 
-export const functionUser = [
+export const functionUser: Array<[Ctor<BaseFunction>, IFunctionNames]> = [
   [Customsum, FUNCTION_NAMES_USER.CUSTOMSUM],
   [CustomAsyncObject, FUNCTION_NAMES_USER.CUSTOM_ASYNC_OBJECT],
   [CustomAsyncArray, FUNCTION_NAMES_USER.CUSTOM_ASYNC_ARRAY],
