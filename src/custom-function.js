@@ -1,7 +1,3 @@
-import type {
-  BaseValueObject,
-  IFunctionInfo, 
-  IFunctionNames} from '@univerjs/engine-formula';
 import {
   ArrayValueObject,
   AsyncObject,
@@ -11,15 +7,13 @@ import {
   StringValueObject,
 } from '@univerjs/engine-formula';
 
-import { type Ctor } from '@wendellhu/redi';
-
 /**
  * function name
  */
-export enum FUNCTION_NAMES_USER {
-  CUSTOMSUM = 'CUSTOMSUM',
-  CUSTOM_ASYNC_OBJECT = 'CUSTOM_ASYNC_OBJECT',
-  CUSTOM_ASYNC_ARRAY = 'CUSTOM_ASYNC_ARRAY',
+export const FUNCTION_NAMES_USER = {
+  CUSTOMSUM : 'CUSTOMSUM',
+  CUSTOM_ASYNC_OBJECT : 'CUSTOM_ASYNC_OBJECT',
+  CUSTOM_ASYNC_ARRAY : 'CUSTOM_ASYNC_ARRAY',
 }
 
 /**
@@ -150,7 +144,7 @@ export const functionZhCN = {
 /**
  * description
  */
-export const FUNCTION_LIST_USER: IFunctionInfo[] = [
+export const FUNCTION_LIST_USER = [
   {
       functionName: FUNCTION_NAMES_USER.CUSTOMSUM,
       aliasFunctionName: 'formula.functionList.CUSTOMSUM.aliasFunctionName',
@@ -216,8 +210,8 @@ export const FUNCTION_LIST_USER: IFunctionInfo[] = [
  * Function algorithm
  */
 export class Customsum extends BaseFunction {
-  override calculate(...variants: BaseValueObject[]) {
-      let accumulatorAll: BaseValueObject = new NumberValueObject(0);
+  calculate(...variants) {
+      let accumulatorAll = new NumberValueObject(0);
       for (let i = 0; i < variants.length; i++) {
           let variant = variants[i];
 
@@ -230,10 +224,10 @@ export class Customsum extends BaseFunction {
           }
 
           if (variant.isArray()) {
-              variant = (variant as ArrayValueObject).sum();
+              variant = variant.sum();
           }
 
-          accumulatorAll = accumulatorAll.plus(variant as BaseValueObject);
+          accumulatorAll = accumulatorAll.plus(variant);
       }
 
       return accumulatorAll;
@@ -244,17 +238,17 @@ export class Customsum extends BaseFunction {
  * Get data asynchronously and assign it to array formula
  */
 export class CustomAsyncArray extends BaseFunction {
-  override calculate(value: BaseValueObject) {
+  calculate(value) {
       return new AsyncObject(asyncArrayFunction(value));
   }
 
-  override isAsync(): boolean {
+  isAsync() {
       return true;
   }
 }
 
-async function asyncArrayFunction(value: BaseValueObject) {
-  return new Promise((resolve: (value: ArrayValueObject) => void) => {
+async function asyncArrayFunction(value) {
+  return new Promise((resolve) => {
       setTimeout(() => {
           resolve(ArrayValueObject.createByArray([['Async Table: ', value.getValue()], ['1', '2'], ['3', '4']]));
       }, 1000);
@@ -265,24 +259,24 @@ async function asyncArrayFunction(value: BaseValueObject) {
  * Get data asynchronously and assign it to a single formula value
  */
 export class CustomAsyncObject extends BaseFunction {
-  override calculate(value: BaseValueObject) {
+  calculate(value) {
       return new AsyncObject(asyncObjectFunction(value));
   }
 
-  override isAsync(): boolean {
+  isAsync() {
       return true;
   }
 }
 
-async function asyncObjectFunction(value: BaseValueObject) {
-  return new Promise((resolve: (value: BaseValueObject) => void) => {
+async function asyncObjectFunction(value) {
+  return new Promise((resolve) => {
       setTimeout(() => {
           resolve(StringValueObject.create(`Async Info: ${value.getValue()}`));
       }, 1000);
   });
 }
 
-export const functionUser: Array<[Ctor<BaseFunction>, IFunctionNames]> = [
+export const functionUser = [
   [Customsum, FUNCTION_NAMES_USER.CUSTOMSUM],
   [CustomAsyncObject, FUNCTION_NAMES_USER.CUSTOM_ASYNC_OBJECT],
   [CustomAsyncArray, FUNCTION_NAMES_USER.CUSTOM_ASYNC_ARRAY],
